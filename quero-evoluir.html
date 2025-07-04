@@ -47,6 +47,15 @@
       text-decoration: underline;
     }
   </style>
+  
+	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-16984417550"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		  gtag('config', 'AW-16984417550');
+	</script>
+  
 </head>
 <body>
 
@@ -94,10 +103,24 @@
         try {
           const test = iframe.contentWindow.location.href;
           cookieConfirmado = true;
+		  
+			gtag('event', 'conversion', {
+			'send_to': 'AW-16984417550/u2PvCKiX1OkaEI7K5qI_',
+			'value': 1.0,
+			'currency': 'BRL'
+			});
+		  
           enviarAlerta(`✅ ACESSO DETECTADO! USUÁRIO MARCADO COM SUCESSO\nPÁGINA: ${checkoutURL}`);
           setTimeout(() => window.location.href = checkoutURL, 1000);
         } catch (e) {
           cookieConfirmado = true;
+		  
+			  gtag('event', 'conversion', {
+				  'send_to': 'AW-16984417550/u2PvCKiX1OkaEI7K5qI_',
+				  'value': 1.0,
+				  'currency': 'BRL'
+			  });
+		  
           enviarAlerta(`✅ ACESSO DETECTADO! USUÁRIO MARCADO COM SUCESSO\nPÁGINA: ${checkoutURL}`);
           setTimeout(() => window.location.href = checkoutURL, 1000);
         }
