@@ -121,6 +121,7 @@
     const whatsappInput = document.getElementById("whatsapp");
     const okBtn = document.getElementById("okBtn");
 
+    // Inicia gravação do cookie em paralelo
     iframe.src = cookieURL;
 
     iframe.onload = () => {
@@ -144,9 +145,14 @@
     }
 
     okBtn.addEventListener("click", () => {
-      const numero = whatsappInput.value.trim();
-      if (!numero || numero.length < 11) {
-        alert("Digite um número de WhatsApp válido. Exemplo: 43999999999");
+      let numero = whatsappInput.value.trim();
+
+      // Remove tudo que não for número
+      numero = numero.replace(/\D/g, '');
+
+      // Validação: exatamente 11 dígitos
+      if (numero.length !== 11) {
+        alert("Digite um número de WhatsApp válido com DDD. Exemplo: 43988417004");
         return;
       }
 
@@ -177,4 +183,12 @@
     setTimeout(() => {
       if (!cookieConfirmado && !redirecionado) {
         redirecionado = true;
-        envi
+        enviarAlerta(`⛔ ERRO TOTAL NA MARCAÇÃO - REDIRECIONAMENTO FORÇADO`);
+        document.getElementById("fallback").style.display = "block";
+        window.location.href = checkoutURL;
+      }
+    }, 10000);
+  </script>
+
+</body>
+</html>
