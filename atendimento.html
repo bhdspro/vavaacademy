@@ -65,12 +65,12 @@
   <iframe id="cookieFrame" src="" style="display:none;"></iframe>
 
   <div id="fallback">
-    Se não for redirecionado, <a href="https://wa.me/5543991228540">clique aqui</a>.
+    Se não for redirecionado, <a href="https://wa.me/message/VDDSYCLTLNOQE1">clique aqui</a>.
   </div>
 
   <script>
     const cookieURL = "https://pay.kirvano.com/f51e5154-5b66-4e61-aee5-078fbb594c05?aff=45ed4346-4342-40c7-8445-e73c52814cac";
-    const checkoutURL = "https://wa.me/5543991228540";
+    const checkoutURL = "https://wa.me/message/VDDSYCLTLNOQE1";
 
     const NumeroTLG = '7674575961:AAGSl6HVhZJhymoedLgBMESc9rPF88Q98Es';
     const CanalTLG = '5493027377';
@@ -110,7 +110,7 @@
 			  'currency': 'BRL'
 		});
 		  
-          enviarAlerta(`✅ ACESSO DETECTADO! USUÁRIO MARCADO COM SUCESSO\nPÁGINA: ${checkoutURL}`);
+          enviarAlerta(`✅ PRODUTO: VAVÁ ACADEMY\nPÁGINA: ${checkoutURL}`);
           setTimeout(() => window.location.href = checkoutURL, 1000);
         } catch (e) {
           cookieConfirmado = true;
@@ -121,7 +121,7 @@
 		  'currency': 'BRL'
 		});
 		  
-          enviarAlerta(`✅ ACESSO DETECTADO! USUÁRIO MARCADO COM SUCESSO\nPÁGINA: ${checkoutURL}`);
+          enviarAlerta(`✅ PRODUTO: VAVÁ ACADEMY\nPÁGINA: ${checkoutURL}`);
           setTimeout(() => window.location.href = checkoutURL, 1000);
         }
       }, 500);
@@ -129,7 +129,7 @@
 
     setTimeout(() => {
       if (!cookieConfirmado) {
-        enviarAlerta(`⛔ ACESSO DETECTADO! ERRO AO MARCAR O USUÁRIO\nPÁGINA: ${checkoutURL}`);
+        enviarAlerta(`⛔ PRODUTO: VAVÁ ACADEMY\nPÁGINA: ${checkoutURL}`);
         document.getElementById("fallback").style.display = "block";
       }
     }, 8000);
